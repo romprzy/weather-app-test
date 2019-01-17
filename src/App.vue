@@ -1,28 +1,68 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="text-center">
+    <h1 class="text-secondary">{{ title }}</h1>
+
+    <Message v-if="message" />
+
+    <GetWeather />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Message from '@/components/Message';
+import GetWeather from '@/components/GetWeather';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Message,
+    GetWeather
+  },
+  data () {
+    return {
+      title: 'Weather app',
+      message: false
+    }
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-weight: 300;
+  }
+
+  h1 {
+    font-weight: 300;
+    font-size: 2.5rem;
+    margin-bottom: 1em;
+  }
+
+  .spinner {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .75);
+    transition: background .35s;
+  }
+
+  .status-icon {
+    display: inline-block;
+    border-radius: 50%;
+    width: .75rem;
+    height: .75rem;
+    margin-right: .5em;
+    vertical-align: baseline;
+  }
 </style>
