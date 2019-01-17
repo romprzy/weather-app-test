@@ -11,8 +11,32 @@ export default {
   },
   data () {
     return {
-      weather: false
+      message: false,
+      weather: false,
+      location: {},
     }
+  },
+  methods: {
+    getLocation () {
+      if (navigator && navigator.hasOwnProperty('geolocation') && navigator.geolocation !== undefined) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this.location = {
+              lat: position.coords.latitude,
+              lon: position.coords.longitude
+            }
+          },
+          error => {
+            this.message = error.message;
+          }
+        );
+      } else {
+        this.message = 'Geolocation is not available on this device.';
+      }
+    }
+  },
+  created () {
+    this.getLocation()
   }
 }
 </script>
