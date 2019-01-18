@@ -75,6 +75,13 @@ export default {
             this.message = error.message;
           }
         })
+    },
+    getFromLocalStorage (item) {
+      const data = JSON.parse(localStorage.getItem(item));
+      return data;
+    },
+    saveToLocalStorage (item, data) {
+      localStorage.setItem(item, data);
     }
   },
   created () {
@@ -83,11 +90,14 @@ export default {
   watch: {
     location () {
       this.getWeather(this.location);
-      // this.saveToLocalStorage ('location', JSON.stringify(this.location));
+      this.saveToLocalStorage ('location', JSON.stringify(this.location));
+    },
+    weather () {
+      this.saveToLocalStorage ('weather', JSON.stringify(this.weather));
+    },
+    message () {
+      this.$emit('message', this.message);
     }
-    // weather () {
-    //   this.saveToLocalStorage ('weather', JSON.stringify(this.weather));
-    // }
   }
 }
 </script>

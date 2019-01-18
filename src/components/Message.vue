@@ -1,7 +1,6 @@
 <template>
   <div class="alert alert-danger">
-    {{ message }}<br>
-    Please try again later...
+    {{ message }}
   </div>
 </template>
 

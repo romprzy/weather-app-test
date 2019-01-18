@@ -2,9 +2,9 @@
   <div id="app" class="text-center">
     <h1 class="text-secondary">{{ title }}</h1>
 
-    <Message v-if="message" />
+    <Message v-if="message" :message="message" />
 
-    <GetWeather />
+    <GetWeather @message="getMessage" />
   </div>
 </template>
 
@@ -22,6 +22,11 @@ export default {
     return {
       title: 'Weather app',
       message: false
+    }
+  },
+  methods: {
+    getMessage (message) {
+      this.message = message;
     }
   }
 }
