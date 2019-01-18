@@ -2,6 +2,8 @@ import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import GetWeather from '@/components/GetWeather.vue'
 
+// const fetch = jest.fn(() => new Promise(resolve => resolve()));
+
 describe('Default state of GetWeather', () => {
   const defaultData = GetWeather.data();
   const methods = GetWeather.methods;
@@ -38,7 +40,7 @@ describe('geolocation test - geolocation does not work on device', () => {
   })
 })
 
-describe('geolocation test', () => {
+describe('geolocation test success', () => {
   let wrapper;
   let vm;
 
@@ -53,11 +55,7 @@ describe('geolocation test', () => {
             latitude: lat,
             longitude: lon
           }
-        })
-        // (error) => Promise.reject(error({
-        //   message: 'Geolocation is not available'
-        // }))
-        ))
+        })))
     }
 
     navigator.geolocation = mockGeolocation;
@@ -76,38 +74,60 @@ describe('geolocation test', () => {
         lon: lon
       })
     })
+  })
+})
 
-    // describe('Geolocation rejects', () => {
-    //   // const mockGeolocation = {
-    //   //   getCurrentPosition: jest.fn()
-    //   //     .mockImplementationOnce(
-    //   //       (success) => Promise.resolve(success({
-    //   //         coords: {
-    //   //           latitude: lat,
-    //   //           longitude: lon
-    //   //         }
-    //   //       })),
-    //   //       (error) => Promise.reject(error({
-    //   //         message: 'Geolocation is not available'
-    //   //       }))
-    //   //     )
-    //   // }
+describe('Geolocation test rejects', () => {
+  let wrapper;
+  let vm;
 
-    //   // navigator.geolocation = mockGeolocation;
+  beforeEach(() => {
+    wrapper = shallowMount(GetWeather);
+    vm = wrapper.vm;
 
-    //   it('location is empty object', async () => {
-    //     // expect.assertions(1);
-    //     await vm.getLocation();
+    const mockGeolocation = {
+      getCurrentPosition: jest.fn()
+        .mockRejectedValueOnce(new Error('Geolocation is not available'))
+    }
 
-    //     expect(vm.location).toEqual({})
-    //   })
+    navigator.geolocation = mockGeolocation;
+  })
 
-    //   it('message is equal to "Geolocation is not available"', async () => {
-    //     // expect.assertions(1);
-    //     await vm.getLocation();
+  afterEach(() => {
+    wrapper.destroy()
+  })
 
-    //     expect(vm.message).toBe('Geolocation is not available')
-    //   })
-    // })
+  it('location is empty object', async () => {
+    expect.assertions(1);
+    await vm.getLocation();
+
+    vm.$nextTick(() => {
+      expect(vm.location).toEqual({})
+    })
+  })
+
+  // it('message is equal to "Geolocation is not available"', async () => {
+  //   expect.assertions(1);
+  //   await vm.getLocation();
+
+  //   expect(vm.message).toBe('Geolocation is not available')
+  //   // vm.$nextTick(() => {
+  //   //   expect(vm.message).toBe('Geolocation is not available')
+  //   // })
+  // })
+})
+
+describe('getWeather tests', () => {
+  const defaultData = GetWeather.data();
+  // const methods = GetWeather.methods;
+
+  // const wrapper = shallowMount(GetWeather)
+
+  it('data.offline === true', () => {
+    expect(defaultData.offline).toBe(true)
+  })
+
+  it('data.weather === false', () => {
+    expect(defaultData.weather).toBe(false)
   })
 })
