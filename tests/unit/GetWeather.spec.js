@@ -1,4 +1,4 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import GetWeather from '@/components/GetWeather.vue'
 
@@ -31,7 +31,7 @@ describe('geolocation test - geolocation does not work on device', () => {
   const vm = wrapper.vm;
 
   it('does not set location when geolocation is not available', () => {
-    expect(vm.location).toEqual({})
+    expect(vm.location).toBeFalsy()
   })
 
   it('get message when try to use geolocation', () => {
@@ -82,8 +82,18 @@ describe('Geolocation test rejects', () => {
   let vm;
 
   beforeEach(() => {
-    wrapper = shallowMount(GetWeather);
+    wrapper = shallowMount(GetWeather, {
+      data () {
+        return {
+          location: false,
+          weather: false
+        }
+      }
+    });
     vm = wrapper.vm;
+
+    vm.getFromLocalStorage = jest.fn();
+    vm.saveToLocalStorage = jest.fn();
 
     const mockGeolocation = {
       getCurrentPosition: jest.fn()
@@ -102,7 +112,7 @@ describe('Geolocation test rejects', () => {
     await vm.getLocation();
 
     vm.$nextTick(() => {
-      expect(vm.location).toEqual({})
+      expect(vm.location).toBeFalsy()
     })
   })
 

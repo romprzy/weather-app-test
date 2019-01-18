@@ -12,14 +12,14 @@ export default {
   data () {
     return {
       message: false,
-      weather: false,
-      location: {},
       api: {
         base_url: 'http://api.openweathermap.org/data/2.5/weather',
         appid: 'ade7a099018e4beaa468a7b3dbab2c04'
       },
       loading: false,
-      offline: true
+      offline: true,
+      location: false || this.getFromLocalStorage('location'),
+      weather: false || this.getFromLocalStorage('weather')
     }
   },
   computed: {
@@ -44,7 +44,6 @@ export default {
             }
           },
           error => {
-            // console.log(error);
             this.message = error.message;
           }
         );
@@ -66,12 +65,8 @@ export default {
         })
         .catch (error => {
           this.loading = false;
-          if (this.getFromLocalStorage('weather')) {
-            this.weather = this.getFromLocalStorage('weather');
-            this.offline = true;
-          }
+          this.offline = true;
           if ('message' in error) {
-            console.log('getWeather Error');
             this.message = error.message;
           }
         })
@@ -89,11 +84,15 @@ export default {
   },
   watch: {
     location () {
-      this.getWeather(this.location);
-      this.saveToLocalStorage ('location', JSON.stringify(this.location));
+      if (this.location) {
+        this.getWeather(this.location);
+        this.saveToLocalStorage ('location', JSON.stringify(this.location));
+      }
     },
     weather () {
-      this.saveToLocalStorage ('weather', JSON.stringify(this.weather));
+      if (this.weather) {
+        this.saveToLocalStorage ('weather', JSON.stringify(this.weather));
+      }
     },
     message () {
       this.$emit('message', this.message);
