@@ -13,7 +13,7 @@ export default {
     return {
       message: false,
       api: {
-        base_url: 'http://api.openweathermap.org/data/2.5/weather',
+        base_url: 'https://api.openweathermap.org/data/2.5/weather',
         appid: 'ade7a099018e4beaa468a7b3dbab2c04'
       },
       loading: false,

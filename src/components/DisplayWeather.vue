@@ -4,7 +4,7 @@
     <div>
       <p v-if="temp" class="temp text-primary">{{ temp }}</p>
       <p v-if="description">
-        <img v-if="icon" :src="`http://openweathermap.org/img/w/${icon}.png`" :alt="description" class="weather-icon" width="50" height="50">
+        <img v-if="icon" :src="`https://openweathermap.org/img/w/${icon}.png`" :alt="description" class="weather-icon" width="50" height="50">
         <span class="weather-description pl-4 text-light">{{ description }}</span>
       </p>
       <p v-if="pressure" class="pressure weather-block">
